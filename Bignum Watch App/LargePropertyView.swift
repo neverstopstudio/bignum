@@ -15,45 +15,30 @@ struct Property {
 struct LargePropertyView: View {
     @State private var currentIndex = 0
     private let properties: [Property] = [
-        Property(title: "Distance", value: "15.2 km"),
-        Property(title: "Energy", value: "320 kcal"),
-        Property(title: "Heart Rate", value: "120 bpm")
+        Property(title: "Distance", value: "5.2 km"),
+        Property(title: "Energy Burned", value: "320 kcal"),
+        Property(title: "Avg Heart Rate", value: "120 bpm")
     ]
     
     var body: some View {
-        VStack {
-            Text(properties[currentIndex].title.uppercased())
-                .font(.system(size: 36))
-                .padding()
-            
-            Text(properties[currentIndex].value)
-                .font(.system(size: 50, weight: .bold))
-                .padding()
-            
-            Spacer()
-        }
-        .gesture(
-            DragGesture()
-                .onEnded { value in
-                    if value.translation.width < 0 && self.currentIndex < self.properties.count - 1 {
-                        withAnimation {
-                            self.currentIndex += 1
-                        }
-                    } else if value.translation.width > 0 && self.currentIndex > 0 {
-                        withAnimation {
-                            self.currentIndex -= 1
-                        }
-                    }
+        TabView(selection: $currentIndex) {
+            ForEach(properties.indices, id: \.self) { index in
+                VStack {
+                    Text(properties[index].title.uppercased())
+                        .font(.title)
+                        .padding()
+                    
+                    Text(properties[index].value)
+                        .font(.system(size: 60, weight: .bold))
+                        .padding()
+                    
+                    Spacer()
                 }
-        )
-        .onAppear {
-            // Load the last visible property
-            // You can implement this using UserDefaults or any other storage mechanism
+                .tag(index)
+            }
         }
-        .onDisappear {
-            // Save the last visible property
-            // You can implement this using UserDefaults or any other storage mechanism
-        }
+        .tabViewStyle(PageTabViewStyle())
+        .indexViewStyle(PageIndexViewStyle(backgroundDisplayMode: .never))
     }
 }
 
