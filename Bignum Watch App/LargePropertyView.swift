@@ -26,11 +26,14 @@ struct LargePropertyView: View {
                 VStack {
                     Text(properties[index].title.uppercased())
                         .font(.title)
+                        .multilineTextAlignment(.center)
                         .padding()
+                        .minimumScaleFactor(0.5)
                     
                     Text(properties[index].value)
                         .font(.system(size: 60, weight: .bold))
                         .padding()
+                        .minimumScaleFactor(0.5)
                     
                     Spacer()
                 }
